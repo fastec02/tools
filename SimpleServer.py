@@ -2,19 +2,17 @@
 
 import http.server
 import socketserver
+import argparse
 import sys
 
-args = sys.argv
+parser = argparse.ArgumentParser(description="Simple Server by Python.")
+parser.add_argument("-p","--port",type=int,default=8000,help="Listen PORT. DEFAULT:8000")
 
-PORT = 8000
+args = parser.parse_args()
+
 Handler = http.server.SimpleHTTPRequestHandler
 
-if(len(args) > 2):
-	print("Error: ./SimpleServer.py <PORT>")
-	sys.exit()
-elif(len(args) == 2):
-	PORT = int(args[1])
 
-with socketserver.TCPServer(("", PORT), Handler) as httpd:
-	print("serving at port", PORT)
+with socketserver.TCPServer(("", args.port), Handler) as httpd:
+	print("serving at port", args.port)
 	httpd.serve_forever()
